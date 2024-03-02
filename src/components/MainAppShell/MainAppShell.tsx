@@ -1,7 +1,11 @@
 import { AppShell, NavLink, Title, Flex } from "@mantine/core";
-import { IconHome2, IconGauge, IconCircleOff } from "@tabler/icons-react";
+import { IconHome2, IconGauge, IconCircleCheck } from "@tabler/icons-react";
 
-export function MainAppShell({ children }) {
+interface MainAppShellProps {
+  children: React.ReactNode;
+}
+
+export function MainAppShell({ children }: MainAppShellProps) {
   return (
     <AppShell
       header={{ height: 60 }}
@@ -24,9 +28,9 @@ export function MainAppShell({ children }) {
           leftSection={<IconHome2 size="1rem" stroke={1.5} />}
         />
         <NavLink
-          href="/second"
-          label="Second Page"
-          leftSection={<IconGauge size="1rem" stroke={1.5} />}
+          href="/habit"
+          label="X Factor"
+          leftSection={<IconCircleCheck size="1rem" stroke={1.5} />}
         />
       </AppShell.Navbar>
 

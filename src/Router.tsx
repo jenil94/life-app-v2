@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { HomePage } from "./pages/Home.page";
 import { SecondPage } from "./pages/SecondPage.page";
+import { HabitPage } from "./pages/HabitPage.page";
 import { MainAppShell } from "./components/MainAppShell/MainAppShell";
 
 const router = createBrowserRouter([
@@ -17,6 +18,14 @@ const router = createBrowserRouter([
     element: (
       <MainAppShell>
         <SecondPage />
+      </MainAppShell>
+    ),
+  },
+  {
+    path: "/habit",
+    element: (
+      <MainAppShell>
+        <HabitPage />
       </MainAppShell>
     ),
   },
