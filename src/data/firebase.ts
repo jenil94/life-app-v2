@@ -79,11 +79,11 @@ export const registerWithEmailAndPassword = async (
   }
 };
 
-const sendPasswordReset = async (email) => {
+const sendPasswordReset = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
     alert("Password reset link sent!");
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
     alert(err.message);
   }
