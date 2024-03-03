@@ -1,28 +1,62 @@
 import { HabitBox } from "@/components/HabitBox/HabitBox";
 import { Title, Box, Flex, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { MonthPickerInput } from "@mantine/dates";
 import { useState } from "react";
 import { IconPlus } from "@tabler/icons-react";
-import { HABIT_LIST } from "../data/habits";
+import {
+  doc,
+  collection,
+  updateDoc,
+  addDoc,
+  deleteDoc,
+} from "firebase/firestore";
 import { AddHabitModal } from "@/components/AddHabitModal/AddHabitModal";
+import { db } from "@/data/firebase";
 
 export function HabitPage() {
   const [value, setValue] = useState<Date | null>(new Date());
   const [opened, { open, close }] = useDisclosure(false);
-  const [habitData, setHabitData] = useState(HABIT_LIST);
+  const habitRef = collection(db, "habits");
 
-  const onAdd = (habitName: string) => {
-    setHabitData((prev) => {
-      return [
-        ...prev,
-        {
-          name: habitName,
-        },
-      ];
-    });
+  const [hData, loading, error] = useCollection(habitRef);
+
+  const habitData =
+    (hData?.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    })) as Array<HabitType>) || [];
+
+  const onAdd = async (habitName: string) => {
+    try {
+      await addDoc(habitRef, {
+        name: habitName,
+        entries: {},
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
     close();
   };
+
+  async function updateHabit(habit: HabitType) {
+    const habitDocRef = doc(db, "habits", habit.id);
+    try {
+      await updateDoc(habitDocRef, { ...habit });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
+
+  async function deleteHabit(habit: HabitType) {
+    const habitDocRef = doc(db, "habits", habit.id);
+    try {
+      await deleteDoc(habitDocRef);
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
 
   return (
     <Box px={16}>
@@ -53,6 +87,7 @@ export function HabitPage() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
           gridGap: "20px",
+          userSelect: "none",
         }}
         mt={24}
       >
@@ -63,6 +98,8 @@ export function HabitPage() {
               habit={habit}
               habitName={habit.name}
               selectedMonth={value as Date}
+              updateHabit={updateHabit}
+              deleteHabit={deleteHabit}
             />
           );
         })}

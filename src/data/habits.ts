@@ -1,17 +1,17 @@
-export const HABIT_LIST = [
+export const HABIT_LIST: Array<HabitType> = [
   {
     name: "Kriya",
-    id: 1,
     entries: {},
+    id: "1",
   },
   {
     name: "Healthy Eating",
-    id: 2,
     entries: {},
+    id: "2",
   },
   {
     name: "Workout",
-    id: 3,
     entries: {},
+    id: "3",
   },
 ];

@@ -21,7 +21,7 @@ export function AddHabitModal({ opened, onClose, onAdd }: AddHabitModalProps) {
         />
         <Flex mt={20}>
           <Button onClick={() => onAdd(name)}>Save</Button>
-          <Button ml={8} variant="default">
+          <Button ml={8} variant="default" onClick={onClose}>
             Cancel
           </Button>
         </Flex>

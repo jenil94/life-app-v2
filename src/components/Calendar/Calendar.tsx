@@ -9,13 +9,19 @@ import classes from "./Calendar.module.css";
 dayjs.extend(isoWeek);
 dayjs.extend(advancedFormat);
 dayjs.extend(isSameOrBefore);
+dayjs.extend(advancedFormat);
 
 interface CalendarProps {
   selectedDate: Date;
   habit: HabitType;
+  handleDateClick: (date: string, habit: HabitType) => void;
 }
 
-export function Calendar({ selectedDate, habit }: CalendarProps) {
+export function Calendar({
+  selectedDate,
+  habit,
+  handleDateClick,
+}: CalendarProps) {
   const date = dayjs(selectedDate);
 
   const startingDate = date.startOf("month").startOf("week");
@@ -37,17 +43,23 @@ export function Calendar({ selectedDate, habit }: CalendarProps) {
       let temparr = new Array(7).fill("");
       for (let i = 0; i < 7; i++) {
         const dateClone = currentDate.add(i, "day");
-        const isToday = dateClone.isSame(date, "day");
+        const isChecked =
+          dateClone.format("x") in habit.entries &&
+          habit.entries[dateClone.format("x")];
         if (dateClone.get("month") === date.get("month")) {
           temparr[i] = (
-            <Grid.Col className={classes.day} span={1}>
+            <Grid.Col
+              className={classes.day}
+              span={1}
+              onClick={() => handleDateClick(dateClone.format("x"), habit)}
+            >
               <Center
                 style={{
                   position: "relative",
                 }}
               >
                 {dateClone.date()}
-                {isToday && (
+                {isChecked && (
                   <IconX
                     color={"#E03131"}
                     style={{

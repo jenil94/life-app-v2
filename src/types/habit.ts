@@ -1,5 +1,5 @@
 interface HabitType {
   name: string;
-  id: number;
+  id: string;
   entries: Record<string, boolean>;
 }
